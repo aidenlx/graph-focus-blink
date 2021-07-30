@@ -1,0 +1,91 @@
+{
+  "name": "mypluginid",
+  "version": "0.0.0",
+  "description": "myplugindesc",
+  "main": "main.js",
+  "scripts": {
+    "dev": "rollup --config rollup.config.js -w",
+    "build": "rollup --config rollup.config.js --environment BUILD:production",
+    "prettier": "prettier --write 'src/**/*.+(ts|tsx|json|html|css)'",
+    "eslint": "eslint . --ext .ts,.tsx --fix",
+    "release": "release-it"
+  },
+  "keywords": [],
+  "author": "AidenLx",
+  "license": "MIT",
+  "devDependencies": {
+    "@release-it/bumper": "^3.0.1",
+    "@release-it/conventional-changelog": "^3.0.1",
+    "@rollup/plugin-commonjs": "^19.0.2",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-typescript": "^8.2.3",
+    "@types/json-schema": "^7.0.8",
+    "@types/node": "^16.4.6",
+    "@typescript-eslint/eslint-plugin": "^4.28.5",
+    "@typescript-eslint/parser": "^4.28.5",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^7.31.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jsdoc": "^36.0.6",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "json": "^11.0.0",
+    "obsidian": "^0.12.11",
+    "prettier": "^2.3.2",
+    "release-it": "^14.10.1",
+    "rollup": "^2.55.0",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-import-css": "^3.0.0",
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5"
+  },
+  "release-it": {
+    "hooks": {
+      "before:init": [
+        "npm run prettier",
+        "npm run eslint"
+      ],
+      "after:bump": [
+        "json -I -f manifest.json -e \"this.version='${version}'\"",
+        "json -I -f versions.json -e \"this['${version}']='$(cat manifest.json | json minAppVersion)'\"",
+        "sed -i '' \"s/available for Obsidian v.*$/available for Obsidian v$(cat manifest.json | json minAppVersion)+./\" README.md",
+        "git add .",
+        "npm run build"
+      ],
+      "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
+    },
+    "git": {
+      "commitMessage": "chore: release v${version}",
+      "tagName": "${version}",
+      "tagAnnotation": "Release v${version}"
+    },
+    "npm": {
+      "publish": false
+    },
+    "github": {
+      "release": true,
+      "assets": [
+        "main.js",
+        "manifest.json",
+        "styles.css"
+      ],
+      "proxy": "http://127.0.0.1:7890",
+      "releaseName": "${version}"
+    },
+    "plugins": {
+      "@release-it/bumper": {
+        "out": "manifest.json"
+      },
+      "@release-it/conventional-changelog": {
+        "preset": "angular",
+        "infile": "CHANGELOG.md"
+      }
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

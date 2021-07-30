@@ -1,0 +1,10 @@
+{
+  "id": "mypluginid",
+  "name": "_MyPlugin-Full_",
+  "version": "0.0.0",
+  "minAppVersion": "0.9.12",
+  "description": "myplugindesc",
+  "author": "AidenLx",
+  "authorUrl": "https://github.com/aidenlx",
+  "isDesktopOnly": true
+}
