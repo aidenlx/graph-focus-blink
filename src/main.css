@@ -1,0 +1,3 @@
+body.alx-graph-blink > .graph-view.color-fill-focused {
+  color: transparent !important;
+}

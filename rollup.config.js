@@ -13,7 +13,7 @@ if you want to view the source visit the plugins github repository
 `;
 
 export default {
-  input: "src/my-main.ts",
+  input: "src/gb-main.ts",
   output: {
     file: "build/main.js",
     sourcemap: "inline",

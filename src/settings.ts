@@ -1,58 +1,39 @@
-import _MyPlugin_ from "my-main";
-import { App, PluginSettingTab, Setting } from "obsidian";
+import Blink from "gb-main";
+import { App, debounce, Notice, PluginSettingTab, Setting } from "obsidian";
 
-export interface _MyPlugin_Settings {
-  hello: boolean;
+export interface BlinkSettings {
+  interval: number;
 }
 
-export const DEFAULT_SETTINGS: _MyPlugin_Settings = {
-  hello: true,
+export const DEFAULT_SETTINGS: BlinkSettings = {
+  interval: 500,
 };
 
-type option = {
-  k: keyof _MyPlugin_Settings;
-  name: string;
-  desc: string | DocumentFragment;
-};
+export class BlinkSettingTab extends PluginSettingTab {
+  plugin: Blink;
 
-export class _MyPlugin_SettingTab extends PluginSettingTab {
-  plugin: _MyPlugin_;
-
-  constructor(app: App, plugin: _MyPlugin_) {
+  constructor(app: App, plugin: Blink) {
     super(app, plugin);
     this.plugin = plugin;
   }
 
   display(): void {
-    for (const o of this.options) {
-      this.setOption(o);
-    }
+    this.containerEl.empty();
+    new Setting(this.containerEl).setName("Blink Interval").addText((txt) =>
+      txt.setValue(this.plugin.settings.interval.toString()).onChange((val) => {
+        const save = debounce(
+          () => {
+            this.plugin.settings.interval = +val;
+            this.plugin.saveSettings();
+            this.plugin.stopBlink();
+            this.plugin.handleChange();
+          },
+          1e3,
+          true,
+        );
+        if (Number.isInteger(+val)) save();
+        else new Notice("invaild interval: must be integer");
+      }),
+    );
   }
-
-  setOption(this: _MyPlugin_SettingTab, { k, name, desc }: option) {
-    new Setting(this.containerEl)
-      .setName(name)
-      .setDesc(desc)
-      .addToggle((toggle) =>
-        toggle.setValue(this.plugin.settings[k]).onChange(async (value) => {
-          this.plugin.settings[k] = value;
-          this.plugin.saveData(this.plugin.settings);
-          this.display();
-        }),
-      );
-  }
-
-  options: option[] = [
-    {
-      k: "hello",
-      name: "Hello",
-      desc: (() => {
-        const descEl = document.createDocumentFragment();
-        descEl.appendText("Line 1");
-        descEl.appendChild(document.createElement("br"));
-        descEl.appendText("Line 2");
-        return descEl;
-      })(),
-    },
-  ];
 }

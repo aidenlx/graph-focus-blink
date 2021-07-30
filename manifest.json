@@ -1,9 +1,9 @@
 {
-  "id": "mypluginid",
-  "name": "_MyPlugin-Full_",
+  "id": "graph-view-blink",
+  "name": "Graph View Blink",
   "version": "0.0.0",
-  "minAppVersion": "0.9.12",
-  "description": "myplugindesc",
+  "minAppVersion": "0.12.12",
+  "description": "blink graph view node",
   "author": "AidenLx",
   "authorUrl": "https://github.com/aidenlx",
   "isDesktopOnly": true
