@@ -1,7 +1,7 @@
 {
   "id": "graph-view-blink",
   "name": "Graph View Blink",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "minAppVersion": "0.12.12",
   "description": "blink graph view node",
   "author": "AidenLx",

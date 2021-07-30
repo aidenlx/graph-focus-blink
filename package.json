@@ -1,6 +1,6 @@
 {
   "name": "graph-view-blink",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "blink graph view node",
   "main": "main.js",
   "scripts": {
